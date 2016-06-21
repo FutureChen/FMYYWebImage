@@ -62,7 +62,7 @@
         }
         else {
             NSLog(@"error = %@  url:%@  self%p", error,url ,self);
-            if (YYWebImageStageFinished) {//YYImage请求未完成被取消,返回error=null
+            if (stage==YYWebImageStageFinished) {//YYImage请求未完成被取消,返回error=null
                 strongSelf.fm_requestState = FM_WebImageDownloadFailed;
             }
             
@@ -125,7 +125,7 @@
         }
         else {
             NSLog(@"error = %@  url:%@  self%p", error,url ,self);
-            if (YYWebImageStageFinished) {//YYImage请求未完成被取消,返回error=null
+            if (stage==YYWebImageStageFinished) {//YYImage请求未完成被取消,返回error=null
                 strongSelf.fm_requestState = FM_WebImageDownloadFailed;
             }
             

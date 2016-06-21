@@ -127,6 +127,11 @@
 @end
 
 @implementation UIView(FMWebImage)
+@dynamic fm_imageLoadedURL;
+@dynamic fm_downloadComplite;
+@dynamic fm_placeholderImageName;
+@dynamic fm_tapRetry;
+@dynamic fm_failureImageName;
 + (void)load
 {
     [UIView webimage_swizzleMethod:@selector(setFm_requestState:) withMethod:@selector(aop_setFm_requestState:) error:nil];
