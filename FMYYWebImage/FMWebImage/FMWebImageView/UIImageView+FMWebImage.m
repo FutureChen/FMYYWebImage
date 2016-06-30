@@ -428,6 +428,7 @@ NSInteger const FM_WEBIMAGE_CONTENTMODE_FIX_TAG =100 ;//因为要设置fm_orgina
             NSLog(@"error = %@  url:%@  self%p", error,url ,self);
             if (stage==YYWebImageStageFinished) {//YYImage请求未完成被取消,返回error=null，要用这个状态进行判断，fuck!!!
                strongSelf.fm_requestState = FM_WebImageDownloadFailed;
+                    [self fm_setShowContentMode:self.fm_failureContentMode andImage:[self fm_getFailureImage]];
             }
             //被取消的状态下，保持loading状态不变，所以略..
          
@@ -435,7 +436,7 @@ NSInteger const FM_WEBIMAGE_CONTENTMODE_FIX_TAG =100 ;//因为要设置fm_orgina
         [strongSelf fm_setupTapGesture];
         if (strongSelf.fm_downloadComplite) {
             strongSelf.fm_downloadComplite(strongSelf,image);
-            [self fm_setShowContentMode:self.fm_failureContentMode andImage:[self fm_getFailureImage]];
+        
         }
         if (completion) {
             completion(image, url, from, stage, error);
