@@ -34,7 +34,7 @@
     
     if ([self.fm_imageLoadedURL isEqualToString:downLoadImageURLString] && image && self.fm_requestState == FM_WebImageDownloadSucceed) {
         ///url 相同并且有图片 就不去走下载图片的流程  ,同一张图，置空，重新再下，这个判断会出问题
-        //        self.fm_downloadComplite(self.image);
+        //        self.fm_downloadComplete(self.image);
         //        return;
     }
     ///正式开始下载
@@ -68,8 +68,8 @@
             
         }
         //        [strongSelf fm_setupTapGesture];
-        if (strongSelf.fm_downloadComplite) {
-            strongSelf.fm_downloadComplite(strongSelf,image);
+        if (strongSelf.fm_downloadComplete) {
+            strongSelf.fm_downloadComplete(strongSelf,image);
             //            [self fm_setShowContentMode:[self fm_failureContentMode] andImage:[self fm_getFailureImage]];
             [self setImage:[self fm_getFailureImage] forState:state];
         }
@@ -97,7 +97,7 @@
     UIImage *image= [self imageForState:state];
     if ([self.fm_imageLoadedURL isEqualToString:downLoadImageURLString] && image && self.fm_requestState == FM_WebImageDownloadSucceed) {
         ///url 相同并且有图片 就不去走下载图片的流程  ,同一张图，置空，重新再下，这个判断会出问题
-        //        self.fm_downloadComplite(self.image);
+        //        self.fm_downloadComplete(self.image);
         //        return;
     }
     ///正式开始下载
@@ -131,8 +131,8 @@
             
         }
         //        [strongSelf fm_setupTapGesture];
-        if (strongSelf.fm_downloadComplite) {
-            strongSelf.fm_downloadComplite(strongSelf,image);
+        if (strongSelf.fm_downloadComplete) {
+            strongSelf.fm_downloadComplete(strongSelf,image);
             //            [self fm_setShowContentMode:[self fm_failureContentMode] andImage:[self fm_getFailureImage]];
             [self setImage:[self fm_getFailureImage] forState:state];
         }

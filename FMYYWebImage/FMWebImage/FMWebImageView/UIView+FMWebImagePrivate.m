@@ -59,11 +59,11 @@
 }
 
 
--(void)setFm_downloadComplite:(void (^)(UIView *, UIImage *))fm_downloadComplite
+-(void)setFm_downloadComplete:(void (^)(UIView *, UIImage *))fm_downloadComplete
 {
-    objc_setAssociatedObject(self, @selector(fm_downloadComplite), fm_downloadComplite, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(fm_downloadComplete), fm_downloadComplete, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
--(void (^)(UIView *, UIImage *))fm_downloadComplite
+-(void (^)(UIView *, UIImage *))fm_downloadComplete
 {
     return objc_getAssociatedObject(self, _cmd);
 }
@@ -128,7 +128,7 @@
 
 @implementation UIView(FMWebImage)
 @dynamic fm_imageLoadedURL;
-@dynamic fm_downloadComplite;
+@dynamic fm_downloadComplete;
 @dynamic fm_placeholderImageName;
 @dynamic fm_tapRetry;
 @dynamic fm_failureImageName;

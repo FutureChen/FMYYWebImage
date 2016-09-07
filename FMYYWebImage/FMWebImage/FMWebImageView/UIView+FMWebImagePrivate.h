@@ -43,7 +43,7 @@
 @interface UIView (FMWebImage)
 
 //必须在调用方法之前设置，否则无效
-@property(nonatomic,copy)  void(^fm_downloadComplite)(UIView *imageView,UIImage * image);
+@property(nonatomic,copy)  void(^fm_downloadComplete)(UIView *imageView,UIImage * image);
 
 @property(copy, nonatomic) NSString *fm_placeholderImageName; /**< 默认占位图请用 FM_addPlaceholderImageName:*/
 @property(copy, nonatomic) NSString *fm_failureImageName;  /**< 默认失败图请用 FM_addFailureImageName:*/

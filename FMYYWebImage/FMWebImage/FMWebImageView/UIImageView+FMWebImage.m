@@ -391,19 +391,26 @@ NSInteger const FM_WEBIMAGE_CONTENTMODE_FIX_TAG =100 ;//因为要设置fm_orgina
                               transform:(nullable YYWebImageTransformBlock)transform
                              completion:(nullable YYWebImageCompletionBlock)completion
 {
-    
-    if ([self.fm_imageLoadedURL isEqualToString:downLoadImageURLString] && self.image && self.fm_requestState == FM_WebImageDownloadSucceed) {
-        ///url 相同并且有图片 就不去走下载图片的流程  ,同一张图，置空，重新再下，这个判断会出问题
-        //        self.fm_downloadComplite(self.image);
-        //        return;
+    if (downLoadImageURLString==nil) {
+        self.fm_imageLoadedURL=nil;
+    }
+    if ([self.fm_imageLoadedURL isEqualToString:downLoadImageURLString] && self.image && self.fm_requestState == FM_WebImageDownloadSucceed) {  ///url 相同并且有图片 就不去走下载图片的流程，减少刷新的时候闪烁的效果
+        self.fm_requestState = FM_WebImageDownloadSucceed;
+        //[self setImage:xx.png ]=>[self setimage:nil ]=>[self setImage:xx.png];  会造成BUG，所以需要上面那个判断
+        //        NSLog(@"_error__%@ fm:%@ \n %@ imageview:%@", downLoadImageURLString,self.fm_imageLoadedURL,self.image,self);
+        if (self.fm_downloadComplete ) {
+            self.fm_downloadComplete (self,self.image);
+        }
+        return;
     }
     
     
     ///正式开始下载
     [self fm_privatePrepareDownload];
     
+    
     FM_WEB_WEAKSELF
-    NSLog(@"______________________________________________%@",downLoadImageURLString);
+    //    NSLog(@"star_______________________________________%@",downLoadImageURLString);
     [self yy_setImageWithURL:[NSURL URLWithString:downLoadImageURLString] placeholder:[self fm_getPlaceholderImage] options:options progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         if (progress)
         {progress( receivedSize, expectedSize);}
@@ -417,26 +424,27 @@ NSInteger const FM_WEBIMAGE_CONTENTMODE_FIX_TAG =100 ;//因为要设置fm_orgina
         
     } transform:transform completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
         FM_WEB_STRONGSELF(weakSelf)
-        
+        //        NSLog(@"Complete______________________________%@ %@ \n",url.absoluteString,image);
         strongSelf.fm_downloadError = error;
-        ///加载完成后 储存downloadImageURL
+        //加载完成后 储存downloadImageURL
         [strongSelf setFm_imageLoadedURL:downLoadImageURLString];
         if (!error && image&&stage==YYWebImageStageFinished) {
             strongSelf.fm_requestState = FM_WebImageDownloadSucceed;
         }
         else {
-            NSLog(@"error = %@  url:%@  self%p", error,url ,self);
+            
             if (stage==YYWebImageStageFinished) {//YYImage请求未完成被取消,返回error=null，要用这个状态进行判断，fuck!!!
-               strongSelf.fm_requestState = FM_WebImageDownloadFailed;
-                    [self fm_setShowContentMode:self.fm_failureContentMode andImage:[self fm_getFailureImage]];
+                strongSelf.fm_requestState = FM_WebImageDownloadFailed;
+                [strongSelf fm_setShowContentMode:strongSelf.fm_failureContentMode andImage:[strongSelf fm_getFailureImage]];
             }
-            //被取消的状态下，保持loading状态不变，所以略..
-         
+            else
+            { //被取消的状态下，保持loading状态不变
+                strongSelf.fm_requestState=FM_WebImageDownloading;
+            }
         }
         [strongSelf fm_setupTapGesture];
-        if (strongSelf.fm_downloadComplite) {
-            strongSelf.fm_downloadComplite(strongSelf,image);
-        
+        if (strongSelf.fm_downloadComplete ) {
+            strongSelf.fm_downloadComplete (strongSelf,image);
         }
         if (completion) {
             completion(image, url, from, stage, error);
